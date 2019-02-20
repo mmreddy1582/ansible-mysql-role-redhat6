@@ -1,20 +1,29 @@
 ---
 # tasks file for deploy_db
-- name: Install required dependecies
-  yum: name={{ item }} state=latest
+- name: Download epel
+  get_url:
+   url: http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+   dest: /opt/mysql.rpm
+   mode: 777
+- name: install Mysql community
+  yum:
+   name: /opt/mysql.rpm
+   state: latest
+- name: install MySQL
+  yum: name={{ item }} state=present
   with_items:
     - mysql-server
 - name: Start MySql Services
   service:
-     name: mysqld
+     name: mysql
      state: started
      enabled: yes
 - name: Create Applicaiton Database
   mysql_db: name={{ db_name }} state=present
 - name: Create Db server
   mysql_user:
-      name: "{{ db_user }}"
-      password: "{{ db_password }}"
+      name: db_user
+      password: Wedday@1234567
       priv: "*.*:ALL"
       state: present
-      host:  '%'
+      host:  '0.0.0.0'
