@@ -1,0 +1,20 @@
+---
+# tasks file for deploy_db
+- name: Install required dependecies
+  yum: name={{ item }} state=latest
+  with_items:
+    - mysql-server
+- name: Start MySql Services
+  service:
+     name: mysqld
+     state: started
+     enabled: yes
+- name: Create Applicaiton Database
+  mysql_db: name={{ db_name }} state=present
+- name: Create Db server
+  mysql_user:
+      name: "{{ db_user }}"
+      password: "{{ db_password }}"
+      priv: "*.*:ALL"
+      state: present
+      host:  '%'
