@@ -1,5 +1,6 @@
 ---
-# tasks file for deploy_db
+# tasks file for deploy_db 
+# Updated code to test the sync 
 - name: Install required dependecies
   yum: name={{ item }} state=latest
   with_items:
